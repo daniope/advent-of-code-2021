@@ -1,3 +1,4 @@
+from argparse import ArgumentParser
 import numpy as np
 
 
@@ -7,17 +8,22 @@ def get_number_of_increases(ds):
         if (y - x) > 0
         ])
 
-def main():
-    ds = np.loadtxt('input.txt')
+def main(args):
+    ds = np.loadtxt(args.input)
     n = get_number_of_increases(ds)
     print('Part 1')
     print('Number of increases: {:d}\n'.format(n))
 
     window = np.ones(3)
-    ds_c = np.convolve(ds, window, mode='valid')
-    n = get_number_of_increases(ds_c)
+    ds_w = np.convolve(ds, window, mode='valid')
+    n = get_number_of_increases(ds_w)
     print('Part 2')
     print('Number of increases: {:d}'.format(n))
 
 if __name__ == '__main__':
-    main()
+    parser = ArgumentParser()
+    parser.add_argument('input')
+
+    args = parser.parse_args()
+
+    main(args)
