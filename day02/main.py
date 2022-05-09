@@ -7,8 +7,9 @@ class Position:
     def __init__(self):
         self.horizontal = 0
         self.depth = 0
+        self.aim = 0
 
-    def move(self, command):
+    def move_1(self, command):
         m, u = command
         if m == 'forward':
             self.horizontal += u
@@ -16,6 +17,16 @@ class Position:
             self.depth -= u
         elif m == 'down':
             self.depth += u
+
+    def move_2(self, command):
+        m, u = command
+        if m == 'forward':
+            self.horizontal += u
+            self.depth += self.aim * u
+        elif m == 'up':
+            self.aim -= u
+        elif m == 'down':
+            self.aim += u
 
     def prod(self):
         return self.horizontal * self.depth
@@ -34,12 +45,16 @@ def parse_input(input):
 
 
 def main(args):
-    p = Position()
-
     commands = parse_input(args.input)
-    for c in commands: p.move(c)
 
+    p = Position()
+    for c in commands: p.move_1(c)
     print('Part 1')
+    print('Result: {:d}'.format(p.prod()))
+
+    p = Position()
+    for c in commands: p.move_2(c)
+    print('Part 2')
     print('Result: {:d}'.format(p.prod()))
 
 
