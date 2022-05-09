@@ -6,25 +6,25 @@ import numpy as np
 class Position:
     def __init__(self):
         self.horizontal = 0
-        self.vertical = 0
+        self.depth = 0
 
     def move(self, command):
-        a, u = command
-        if a == 'forward':
+        m, u = command
+        if m == 'forward':
             self.horizontal += u
-        elif a == 'up':
-            self.vertical -= u
-        elif a == 'down':
-            self.vertical += u
+        elif m == 'up':
+            self.depth -= u
+        elif m == 'down':
+            self.depth += u
 
     def prod(self):
-        return self.horizontal * self.vertical
+        return self.horizontal * self.depth
 
     
 def parse_command(line):
     line_s = line.strip()
-    aim, units = line_s.split(' ')
-    return (aim, int(units))
+    movement, units = line_s.split(' ')
+    return (movement, int(units))
 
 
 def parse_input(input):
@@ -32,16 +32,6 @@ def parse_input(input):
         commands = [parse_command(line) for line in f]
     return commands
 
-
-def move(position, command):
-    a, u = command
-    if a == 'forward':
-        return [position[0]+u, position[1]]
-    elif a == 'up':
-        return [position[0], position[1]-u]
-    elif a == 'down':
-        return [position[0], position[1]+u]
-    
 
 def main(args):
     p = Position()
