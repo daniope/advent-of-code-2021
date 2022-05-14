@@ -8,7 +8,7 @@ def parse_input(input):
             [int(x) for x in line.strip()]
             for line in f
             ]
-    return result
+    return np.asarray(result)
 
 
 def get_gamma(report):
@@ -26,30 +26,32 @@ def get_epsilon(report):
 
 
 def get_oxygen_gen_rating(report):
-    n_bits = len(report[0])
+    n_bits = report.shape[1]
     kept = report
 
-    for i in range(n_bits):
-        size = len(kept)
+    for idx in range(n_bits):
+        size = kept.shape[0]
         if size == 1: break
-        sum = np.sum([el[i] for el in kept])
+        sum = np.sum(kept[:, idx])
         bit_to_keep = int(sum >= size / 2)
-        kept = [el for el in kept if el[i] == bit_to_keep]
+        loc = np.where(kept[:, idx] == bit_to_keep)
+        kept = kept[loc]
 
     ogr = int(''.join([str(el) for el in kept[0]]), 2)
     return ogr
 
 
 def get_co2_scrubber_rating(report):
-    n_bits = len(report[0])
+    n_bits = report.shape[1]
     kept = report
 
-    for i in range(n_bits):
-        size = len(kept)
+    for idx in range(n_bits):
+        size = kept.shape[0]
         if size == 1: break
-        sum = np.sum([el[i] for el in kept])
+        sum = np.sum(kept[:, idx])
         bit_to_keep = int(sum < size / 2)
-        kept = [el for el in kept if el[i] == bit_to_keep]
+        loc = np.where(kept[:, idx] == bit_to_keep)
+        kept = kept[loc]
 
     csr = int(''.join([str(el) for el in kept[0]]), 2)
     return csr
