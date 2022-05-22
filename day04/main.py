@@ -60,6 +60,15 @@ def part_1(called, boards):
             if b.update(c): return (b.unmarked_sum() * c)
 
 
+def part_2(called, boards):
+    winning_bs = np.full(len(boards), False)
+    for c in called:
+        for idx, b in enumerate(boards):
+            if b.update(c):
+                winning_bs[idx] = True
+                if np.all(winning_bs): return (b.unmarked_sum() * c)
+
+
 def main(args):
     with open(args.input, 'r') as f:
         lines = [line.strip() for line in f.readlines()]
@@ -67,6 +76,9 @@ def main(args):
     
     print('Part 1')
     print('Answer: {:d}'.format(part_1(called, boards)))
+
+    print('\nPart 2')
+    print('Answer: {:d}'.format(part_2(called, boards)))
 
 
 if __name__ == '__main__':
